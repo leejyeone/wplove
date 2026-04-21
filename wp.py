@@ -108,7 +108,7 @@ if 'route' in st.session_state and st.session_state.route:
             total_time += t
             st.markdown(f"<p style='text-align:center; color:gray; font-size: 0.8rem;'>🚶‍♂️ 다음 장소까지 약 {t}분</p>", unsafe_allow_html=True)
 
-    st.success(f" 🚩 총 {len(st.session_state.route)}곳 방문  \n 🚶‍♂️ 총 예상 도보 {total_time}분 (직선거리 기준, 정확한 시간은 네이버 지도로 보세용)")
+    st.success(f"🚩 총 {len(st.session_state.route)}곳 방문\n🚶‍♂️ 총 예상 도보 {total_time}분 (직선거리 기준, 정확한 시간은 네이버 지도로 보세용)")
 
     # 지도 표시
     st.subheader("🗺️ 투어 경로 지도")
