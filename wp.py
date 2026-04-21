@@ -38,11 +38,11 @@ def optimize_route(selected_cafes):
     return path
 
 st.set_page_config(page_title="원필이 생카 계획짜기", layout="centered")
-st.title("🍀🐰원필이 생카🐰🍀")
+st.title("🍀🐰🎂")
 st.divider()
 
 
-st.subheader("카페를 선택하세용~")
+st.subheader("원필이 생카 리스트")
 # 동적 선택 리스트 구성을 위한 변수
 temp_selected = [CAFE_DATA[0], CAFE_DATA[1]]
 cols = st.columns(2)
@@ -93,24 +93,22 @@ if 'route' in st.session_state and st.session_state.route:
             # 상세 리스트에서도 링크 클릭 방식으로 수정
             st.markdown(f"🔗 [공지]({cafe['공지']})")
             
-            c1, c2, c3 = st.columns([1, 1, 2])
-            if c1.button("▲", key=f"up_{i}"):
-                if i > 0:
-                    st.session_state.route[i], st.session_state.route[i-1] = st.session_state.route[i-1], st.session_state.route[i]
-                    st.rerun()
-            if c2.button("▼", key=f"down_{i}"):
-                if i < len(st.session_state.route)-1:
-                    st.session_state.route[i], st.session_state.route[i+1] = st.session_state.route[i+1], st.session_state.route[i]
-                    st.rerun()
+            c1, c2, c3 = st.columns(3) 
+
+            with c1:
+                st.button("▲", key=f"up_{i}", use_container_width=True) # 로직은 동일
+            with c2:
+                st.button("▼", key=f"down_{i}", use_container_width=True)
             with c3:
-                st.link_button("네이버 지도", f"https://map.naver.com/v5/search/{cafe['주소']}", use_container_width=True)
+                # 📍 아이콘을 빼고 '지도' 두 글자만 넣으면 어떤 해상도에서도 거의 안 깨집니다.
+                st.link_button("지도", f"https://map.naver.com/v5/search/{cafe['주소']}", use_container_width=True)
 
         if i < len(st.session_state.route) - 1:
             t = get_walking_time(cafe, st.session_state.route[i+1])
             total_time += t
             st.markdown(f"<p style='text-align:center; color:gray; font-size: 0.8rem;'>🚶‍♂️ 다음 장소까지 약 {t}분</p>", unsafe_allow_html=True)
 
-    st.success(f"🚩 총 {len(st.session_state.route)}곳 방문 | 🚶‍♂️ 총 예상 도보 {total_time}분 (직선거리 기준, 정확한 시간은 네이버 지도로 보세용)")
+    st.success(f" 🚩 총 {len(st.session_state.route)}곳 방문  \n 🚶‍♂️ 총 예상 도보 {total_time}분 (직선거리 기준, 정확한 시간은 네이버 지도로 보세용)")
 
     # 지도 표시
     st.subheader("🗺️ 투어 경로 지도")
