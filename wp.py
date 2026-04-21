@@ -72,7 +72,7 @@ for i in range(0, len(CAFE_DATA), 2):
                 st.markdown(f"🔗 [트위터 공지]({cafe['공지']})")
 
 # 2. 동선 업데이트 및 최적화
-st.divider()
+
 button_con = st.container()
 
 with button_con:
@@ -95,10 +95,14 @@ if 'route' in st.session_state and st.session_state.route:
             
             c1, c2, c3 = st.columns(3) 
 
-            with c1:
-                st.button("▲", key=f"up_{i}", use_container_width=True) # 로직은 동일
-            with c2:
-                st.button("▼", key=f"down_{i}", use_container_width=True)
+            if c1.button("▲", key=f"up_{i}", use_container_width=True):
+                if i > 0:
+                    st.session_state.route[i], st.session_state.route[i-1] = st.session_state.route[i-1], st.session_state.route[i]
+                    st.rerun()
+            if c2.button("▼", key=f"down_{i}", use_container_width=True):
+                if i < len(st.session_state.route)-1:
+                    st.session_state.route[i], st.session_state.route[i+1] = st.session_state.route[i+1], st.session_state.route[i]
+                    st.rerun()
             with c3:
                 # 📍 아이콘을 빼고 '지도' 두 글자만 넣으면 어떤 해상도에서도 거의 안 깨집니다.
                 st.link_button("📍네이버 지도", f"https://map.naver.com/v5/search/{cafe['주소']}", use_container_width=True)
@@ -108,7 +112,7 @@ if 'route' in st.session_state and st.session_state.route:
             total_time += t
             st.markdown(f"<p style='text-align:center; color:gray; font-size: 0.8rem;'>🚶‍♂️ 다음 장소까지 약 {t}분</p>", unsafe_allow_html=True)
 
-    st.success(f"🚩 총 {len(st.session_state.route)}곳 방문\n🚶‍♂️ 총 예상 도보 {total_time}분 (직선거리 기준, 정확한 시간은 네이버 지도로 보세용)")
+    st.success(f"🚩 총 {len(st.session_state.route)}곳 방문 🚶‍♂️ 총 예상 도보 {total_time}분 (직선거리 기준, 정확한 시간은 네이버 지도로 보세용)")
 
     # 지도 표시
     st.subheader("🗺️ 투어 경로 지도")
@@ -128,7 +132,6 @@ if 'route' in st.session_state and st.session_state.route:
         
         folium.Marker(
             [cafe['lat'], cafe['lon']],
-            tooltip=cafe['이름'],
             popup=folium.Popup(popup_html, max_width=200),
             icon=folium.Icon(color = 'pink', icon = 'music')
         ).add_to(m)
