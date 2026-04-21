@@ -38,7 +38,7 @@ def optimize_route(selected_cafes):
     return path
 
 st.set_page_config(page_title="원필이 생카 계획짜기", layout="centered")
-st.title("🍀🐰 0428 원필이 생카!! 🐰🍀")
+st.title("🍀🐰원필이 생카🐰🍀")
 st.divider()
 
 
@@ -56,7 +56,7 @@ for i in range(0, len(CAFE_DATA), 2):
         with cols[j]:
             # 0, 1번은 기본 체크
             default_val = True if idx < 2 else False
-            is_checked = st.checkbox(f"{cafe['이름']}", key=f"check_{idx}", value=default_val)
+            is_checked = st.checkbox(f"**{cafe['이름']}**", key=f"check_{idx}", value=default_val)
             
             if is_checked:
                 temp_selected.append(cafe)
