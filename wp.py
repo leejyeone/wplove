@@ -44,7 +44,7 @@ st.divider()
 
 st.subheader("원필이 생카 리스트")
 # 동적 선택 리스트 구성을 위한 변수
-temp_selected = [CAFE_DATA[0], CAFE_DATA[1]]
+temp_selected = []
 cols = st.columns(2)
 
 for i in range(0, len(CAFE_DATA), 2):
@@ -101,7 +101,7 @@ if 'route' in st.session_state and st.session_state.route:
                 st.button("▼", key=f"down_{i}", use_container_width=True)
             with c3:
                 # 📍 아이콘을 빼고 '지도' 두 글자만 넣으면 어떤 해상도에서도 거의 안 깨집니다.
-                st.link_button("지도", f"https://map.naver.com/v5/search/{cafe['주소']}", use_container_width=True)
+                st.link_button("📍네이버 지도", f"https://map.naver.com/v5/search/{cafe['주소']}", use_container_width=True)
 
         if i < len(st.session_state.route) - 1:
             t = get_walking_time(cafe, st.session_state.route[i+1])
