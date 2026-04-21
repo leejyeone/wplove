@@ -47,25 +47,29 @@ st.subheader("카페를 선택하세용~")
 temp_selected = [CAFE_DATA[0], CAFE_DATA[1]]
 cols = st.columns(2)
 
-for i, cafe in enumerate(CAFE_DATA):
-    with cols[i % 2]:
-        # 0, 1번은 체크박스 없이 항상 추가됨
-        if i < 2:
-            is_checked = st.checkbox(f"**{cafe['이름']}**", key=f"check_{i}", value=True)
-        else:
-            is_checked = st.checkbox(f"**{cafe['이름']}**", key=f"check_{i}", value=False)
+for i in range(0, len(CAFE_DATA), 2):
+    row_cafes = CAFE_DATA[i:i+2]
+    cols = st.columns(2)
+    
+    for j, cafe in enumerate(row_cafes):
+        idx = i + j
+        with cols[j]:
+            # 0, 1번은 기본 체크
+            default_val = True if idx < 2 else False
+            is_checked = st.checkbox(f"{cafe['이름']}", key=f"check_{idx}", value=default_val)
+            
             if is_checked:
                 temp_selected.append(cafe)
-        
-        # 상세 정보 토글 (체크박스 아래 위치)
-        with st.expander(f"🏠 {cafe['주소']}"):
-            st.write(f"🕒 **오픈:** {cafe['오픈']}")
-            st.write(f"🎁 **특전:** {cafe['기본특전']}")
-            st.write(f"🍀 **럭드:** {cafe['럭드']}  📸 **부스:** {cafe['포토부스']}")
-            if cafe["특이사항"] != "-":
-                st.write(f"💡 **특이사항:** {cafe['특이사항']}")
+            
+            # 요청하신 형식을 그대로 유지한 토글 부분
+            with st.expander(f"🏠 {cafe['주소']}"):
+                st.write(f"🕒 **오픈:** {cafe['오픈']}")
+                st.write(f"🎁 **특전:** {cafe['기본특전']}")
+                st.write(f"🍀 **럭드:** {cafe['럭드']}  📸 **부스:** {cafe['포토부스']}")
+                if cafe["특이사항"] != "-":
+                    st.write(f"💡 **특이사항:** {cafe['특이사항']}")
 
-            st.markdown(f"🔗 [트위터 공지]({cafe['공지']})")
+                st.markdown(f"🔗 [트위터 공지]({cafe['공지']})")
 
 # 2. 동선 업데이트 및 최적화
 st.divider()
